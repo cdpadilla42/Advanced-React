@@ -1,5 +1,6 @@
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
+import { User } from './schemas/User';
 import {
   withItemData,
   statelessSessions,
@@ -37,7 +38,7 @@ export default withAuth(
       // TODO: Add data seeding here
     },
     lists: createSchema({
-      // Schema items go in here
+      User,
     }),
     ui: {
       // TODO Change this for roles
@@ -48,7 +49,7 @@ export default withAuth(
     },
     // TODO Add session values here
     session: withItemData(statelessSessions(sessionConfig), {
-      User: 'id',
+      User: 'id name',
     }),
   })
 );
