@@ -1,6 +1,7 @@
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import { User } from './schemas/User';
+import { Product } from './schemas/Product';
 import {
   withItemData,
   statelessSessions,
@@ -39,6 +40,7 @@ export default withAuth(
     },
     lists: createSchema({
       User,
+      Product,
     }),
     ui: {
       // TODO Change this for roles
