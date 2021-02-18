@@ -2,9 +2,12 @@ import { ApolloProvider } from '@apollo/client';
 import withData from '../lib/withData';
 import Page from '../components/Page';
 import Nprogress from 'nprogress';
+import '../components/styles/nprogress.css';
 import Router from 'next/router';
 
 Router.events.on('routeChangeStart', () => Nprogress.start());
+Router.events.on('routeChangeComplete', () => Nprogress.done());
+Router.events.on('routeChangeError', () => Nprogress.done());
 
 function App({ Component, pageProps, apollo }) {
   return (
