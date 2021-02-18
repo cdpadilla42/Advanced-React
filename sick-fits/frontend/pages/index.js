@@ -2,7 +2,7 @@ import React from 'react';
 import Page from '../components/Page';
 
 const Index = () => {
-  return <Page>Hello</Page>;
+  return <div>Hello</div>;
 };
 
 export default Index;
