@@ -15,6 +15,8 @@ export default function Product({ product }) {
         <Link href={`/product/${product.id}`}>{product.name}</Link>
       </Title>
       <PriceTag>{formatMoney(product.price)}</PriceTag>
+      <p>{product.description}</p>
+      {/* TODO Add Buttons to edit and delete items */}
     </ItemStyles>
   );
 }
