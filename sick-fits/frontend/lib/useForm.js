@@ -11,7 +11,7 @@ export default function useForm(initial = {}) {
     }
 
     if (type === 'file') {
-      value[0] = e.currentTarget.files;
+      [value] = e.currentTarget.files;
     }
 
     setInputs({
