@@ -1,6 +1,9 @@
+import Router from 'next/router';
 import useForm from '../lib/useForm';
 import Form from './styles/Form';
 import { gql, useMutation } from '@apollo/client';
+import DisplayError from './ErrorMessage';
+import { ALL_PRODUCTS_QUERY } from './Products';
 
 const CREATE_NEW_PRODUCT = gql`
   mutation CREATE_NEW_PRODUCT(
@@ -33,18 +36,26 @@ export default function CreateProduct() {
     description: 'Cool guy',
     image: '',
   });
-  const [createNewProduct, { data }] = useMutation(CREATE_NEW_PRODUCT, {
-    variables: inputs,
-  });
+  const [createNewProduct, { data, loading, error }] = useMutation(
+    CREATE_NEW_PRODUCT,
+    {
+      variables: inputs,
+      refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
+    }
+  );
 
   return (
     <Form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        createNewProduct(inputs);
+        const res = await createNewProduct();
+        clearForm();
+        // Go To Product Page
+        Router.push(`/product/${res.data.createProduct.id}`);
       }}
     >
-      <fieldset>
+      <DisplayError error={error} />
+      <fieldset disabled={loading} aria-busy={loading}>
         <label htmlFor="image">
           Image
           <input
