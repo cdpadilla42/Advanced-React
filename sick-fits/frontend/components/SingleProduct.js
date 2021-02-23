@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Head from 'next/head';
 import { gql, useQuery } from '@apollo/client';
 import DisplayError from './ErrorMessage';
@@ -23,6 +24,7 @@ const SINGLE_ITEM_QUERY = gql`
       name
       description
       price
+      id
       photo {
         altText
         image {
@@ -55,6 +57,18 @@ export default function SingleProduct({ id }) {
       <div className="details">
         <h2>{Product.name}</h2>
         <p>{Product.description}</p>
+      </div>
+      <div className="buttonList">
+        <Link
+          href={{
+            pathname: '/update',
+            query: {
+              id: Product.id,
+            },
+          }}
+        >
+          Edit ✏️
+        </Link>
       </div>
     </ProductStyles>
   );
