@@ -12,6 +12,7 @@ const ProductStyles = styled.div`
   justify-content: center;
   align-items: top;
   gap: 2rem;
+
   img {
     object-fit: contain;
     width: 100%;

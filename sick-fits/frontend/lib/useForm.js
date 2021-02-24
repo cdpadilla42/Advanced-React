@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
 import { useState } from 'react';
 
 export default function useForm(initial = {}) {
   const [inputs, setInputs] = useState(initial);
+  const initialValues = Object.values(initial).join('');
+
+  // * Use in case of inital state errors
+  // useEffect(() => {
+  //   setInputs(initial)
+  // }, [initialValues])
 
   function handleChange(e) {
     let { name, type, value } = e.currentTarget;
