@@ -1,0 +1,38 @@
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+
+const DELETE_PRODUCT = gql`
+  mutation DELETE_PRODUCT($id: ID!) {
+    deleteProduct(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
+function update(cache, payload) {
+  console.log({ cache, payload });
+  cache.evict(cache.identify(payload.data.deleteProduct));
+}
+
+export default function DeleteProduct({ id, children }) {
+  const [deleteProduct, { loading }] = useMutation(DELETE_PRODUCT, {
+    variables: {
+      id,
+    },
+    update: update,
+  });
+
+  return (
+    <button
+      disabled={loading}
+      onClick={() => {
+        if (confirm('Are you sure you want to delete this item?')) {
+          deleteProduct();
+        }
+      }}
+    >
+      {children}
+    </button>
+  );
+}
