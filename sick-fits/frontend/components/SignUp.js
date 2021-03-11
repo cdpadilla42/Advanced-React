@@ -32,9 +32,7 @@ export default function SignUp() {
     const result = await signUpUser().catch((err) => console.error(err));
     if (result) {
       console.log('Youre ine!');
-      console.log(result);
-      // Push to home page
-      // router.push('/');
+      clearForm();
     }
   };
 
