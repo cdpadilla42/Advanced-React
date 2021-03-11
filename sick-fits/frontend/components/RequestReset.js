@@ -6,8 +6,12 @@ import DisplayError from './ErrorMessage';
 import Form from './styles/Form';
 import { CURRENT_USER_QUERY } from './User';
 
-const SIGN_UP = gql`
-  mutation SIGN_UP($email: String!, $password: String!, $name: String!) {
+const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION(
+    $email: String!
+    $password: String!
+    $name: String!
+  ) {
     createUser(data: { email: $email, password: $password, name: $name }) {
       id
       email
@@ -15,16 +19,17 @@ const SIGN_UP = gql`
   }
 `;
 
-export default function SignUp() {
+export default function RequestReset() {
   const { inputs, handleChange, clearForm } = useForm({
-    email: 'johnathan@mail.com',
-    name: 'Johny ',
-    password: 'JohnJohnJohn',
+    email: '',
   });
 
-  const [signUpUser, { data, loading, error }] = useMutation(SIGN_UP, {
-    variables: inputs,
-  });
+  const [requestReset, { data, loading, error }] = useMutation(
+    REQUEST_RESET_MUTATION,
+    {
+      variables: inputs,
+    }
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
