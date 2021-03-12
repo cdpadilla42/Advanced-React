@@ -5,38 +5,45 @@ import useForm from '../lib/useForm';
 import DisplayError from './ErrorMessage';
 import Form from './styles/Form';
 
-const REQUEST_RESET_MUTATION = gql`
-  mutation REQUEST_RESET_MUTATION($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
+const RESET_MUTATION = gql`
+  mutation RESET_MUTATION(
+    $email: String!
+    $token: String!
+    $password: String!
+  ) {
+    redeemUserPasswordResetToken(
+      email: $email
+      password: $password
+      token: $token
+    ) {
       code
       message
     }
   }
 `;
 
-export default function RequestReset() {
+export default function Reset({ token }) {
   const { inputs, handleChange, clearForm } = useForm({
     email: '',
+    password: '',
+    token,
   });
 
-  const [requestReset, { data, loading, error }] = useMutation(
-    REQUEST_RESET_MUTATION,
-    {
-      variables: inputs,
-    }
-  );
+  const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
+    variables: inputs,
+  });
 
   const [message, setMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await requestReset().catch((err) => console.error(err));
+    const result = await reset().catch((err) => console.error(err));
     setMessage(true);
   };
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>
-      <h2>Request Password Reset</h2>
+      <h2>Reset Password</h2>
 
       <fieldset disabled={loading} aria-busy={loading}>
         {message && (
@@ -55,6 +62,19 @@ export default function RequestReset() {
             autoComplete="email"
             value={inputs.email}
             onChange={handleChange}
+            required
+          />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="password"
+            value={inputs.password}
+            onChange={handleChange}
+            minLength="8"
             required
           />
         </label>
