@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { gql, useQuery } from '@apollo/client';
 import DisplayError from './ErrorMessage';
 import styled from 'styled-components';
+import AddToCart from './AddToCart';
 
 const ProductStyles = styled.div`
   display: grid;
@@ -70,6 +71,7 @@ export default function SingleProduct({ id }) {
         >
           Edit ✏️
         </Link>
+        <AddToCart id={id} />
       </div>
     </ProductStyles>
   );
