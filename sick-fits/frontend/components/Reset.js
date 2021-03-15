@@ -38,20 +38,24 @@ export default function Reset({ token }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await reset().catch((err) => console.error(err));
-    setMessage(true);
+    if (!result.redeemUserPasswordResetToken) {
+      setMessage(true);
+    }
   };
 
+  console.log(data);
   return (
     <Form method="POST" onSubmit={handleSubmit}>
       <h2>Reset Password</h2>
-
+      <DisplayError
+        error={
+          (data?.redeemUserPasswordResetToken?.code &&
+            data.redeemUserPasswordResetToken) ||
+          error
+        }
+      />
+      {message && <p>Success! You may now log in with new password</p>}
       <fieldset disabled={loading} aria-busy={loading}>
-        {message && (
-          <p>
-            Success! If this email is associated with an account, you will
-            recieve an email.
-          </p>
-        )}
         <label htmlFor="email">
           Email
           <input

@@ -23,7 +23,11 @@ export default function Pagination({ page }) {
   const pageCount = Math.ceil(count / perPage);
   return (
     <PaginationStyles>
-      <Head>Sick Fits – Page {page} of _____ </Head>
+      <Head>
+        <title>
+          Sick Fits – Page {page} of {pageCount}
+        </title>
+      </Head>
       <Link href={`/products/${page - 1}`}>
         <a aria-disabled={page <= 1}>Prev</a>
       </Link>

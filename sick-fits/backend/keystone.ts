@@ -2,6 +2,7 @@ import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
 import { User } from './schemas/User';
 import { Product } from './schemas/Product';
+import { CartItem } from './schemas/CartItem';
 import { ProductImage } from './schemas/ProductImage';
 import {
   withItemData,
@@ -9,6 +10,8 @@ import {
 } from '@keystone-next/keystone/session';
 import 'dotenv/config';
 import { insertSeedData } from './seed-data';
+import { sendPasswordResetEmail } from './lib/mail';
+import { extendGraphqlSchema } from './mutations/index';
 
 const databaseURL = process.env.DATABASE_URL;
 
@@ -27,7 +30,7 @@ const { withAuth } = createAuth({
   },
   passwordResetLink: {
     async sendToken(args) {
-      console.log(args);
+      sendPasswordResetEmail(args.token, process.env.MAIL_USER);
     },
   },
 });
@@ -54,7 +57,9 @@ export default withAuth(
       User,
       Product,
       ProductImage,
+      CartItem,
     }),
+    extendGraphqlSchema: extendGraphqlSchema,
     ui: {
       // TODO Change this for roles
       isAccessAllowed: ({ session }) => {

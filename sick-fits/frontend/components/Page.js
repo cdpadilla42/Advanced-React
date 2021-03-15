@@ -63,6 +63,7 @@ const Page = ({ children, cool }) => {
     <div>
       <GlobalStyles />
       <Header />
+
       <InnerStyles>{children}</InnerStyles>
     </div>
   );
