@@ -71,7 +71,6 @@ export default function SingleProduct({ id }) {
         >
           Edit ✏️
         </Link>
-        <AddToCart id={id} />
       </div>
     </ProductStyles>
   );
