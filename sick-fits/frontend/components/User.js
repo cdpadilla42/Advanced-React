@@ -7,6 +7,9 @@ export const CURRENT_USER_QUERY = gql`
         name
         email
         id
+        _cartMeta {
+          count
+        }
         cart {
           id
           quantity

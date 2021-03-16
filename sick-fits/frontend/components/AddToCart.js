@@ -1,4 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
+import { useCart } from '../lib/cartState';
 import { CURRENT_USER_QUERY } from './User';
 
 const ADD_TO_CART_MUTATION = gql`
@@ -15,8 +16,17 @@ export default function AddToCart({ id }) {
     variables: { id },
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
+
+  const { openCart } = useCart();
   return (
-    <button disabled={loading} type="button" onClick={addToCart}>
+    <button
+      disabled={loading}
+      type="button"
+      onClick={() => {
+        addToCart();
+        openCart();
+      }}
+    >
       Add{loading && 'ing'} To Cart 🛒
     </button>
   );
