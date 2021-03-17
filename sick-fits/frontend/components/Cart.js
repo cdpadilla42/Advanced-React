@@ -6,6 +6,7 @@ import formatMoney from '../lib/formatMoney';
 import { calcTotalPrice } from '../lib/calcTotalPrice';
 import { useCart } from '../lib/cartState';
 import RemoveFromCart from './RemoveFromCart';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -28,19 +29,30 @@ function CartItem({ cartItem }) {
 
   return (
     <CartItemStyles>
-      <img
-        width="100"
-        src={product.photo.image.publicUrlTransformed}
-        alt={product.name}
-      />
-      <p>{product.name}</p>
-      <p>
-        {formatMoney(product.price * cartItem.quantity)}–
-        <em>
-          {cartItem.quantity} &times; {formatMoney(product.price)}
-        </em>
-        <RemoveFromCart id={cartItem.id} />
-      </p>
+      <TransitionGroup>
+        <CSSTransition
+          unmountOnExit
+          classNames="cart_item"
+          className="cart_item"
+          timeout={{ enter: 40000, exit: 40000 }}
+        >
+          <>
+            <img
+              width="100"
+              src={product.photo.image.publicUrlTransformed}
+              alt={product.name}
+            />
+            <p>{product.name}</p>
+            <p>
+              {formatMoney(product.price * cartItem.quantity)}–
+              <em>
+                {cartItem.quantity} &times; {formatMoney(product.price)}
+              </em>
+              <RemoveFromCart id={cartItem.id} />
+            </p>
+          </>
+        </CSSTransition>
+      </TransitionGroup>
     </CartItemStyles>
   );
 }

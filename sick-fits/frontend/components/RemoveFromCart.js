@@ -24,9 +24,18 @@ const StyledButton = styled.button`
 `;
 
 export default function RemoveFromCart({ id }) {
-  const [removeFromCart] = useMutation(REMOVE_FROM_CART, {
+  const [removeFromCart, { loading }] = useMutation(REMOVE_FROM_CART, {
     variables: { id },
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
-  return <StyledButton onClick={removeFromCart}>&times;</StyledButton>;
+  return (
+    <StyledButton
+      type="button"
+      title="Remove This Item from Cart"
+      onClick={removeFromCart}
+      disabled={loading}
+    >
+      &times;
+    </StyledButton>
+  );
 }
