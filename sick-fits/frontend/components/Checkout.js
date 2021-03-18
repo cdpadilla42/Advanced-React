@@ -1,3 +1,4 @@
+import { useMutation } from '@apollo/client';
 import {
   CardElement,
   Elements,
@@ -5,10 +6,12 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import gql from 'graphql-tag';
 import nProgress from 'nprogress';
 import { useState } from 'react';
 import styled from 'styled-components';
 import SickButton from './styles/SickButton';
+
 const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(0, 0, 0, 0.6);
@@ -18,6 +21,14 @@ const CheckoutFormStyles = styled.form`
   grid-gap: 1rem;
 `;
 
+const CHECKOUT_MUTATION = gql`
+  mutation CHECKOUT_MUTATION($token: String!) {
+    checkout(token: $token) {
+      id
+    }
+  }
+`;
+
 const stripeLib = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
 function CheckoutForm() {
@@ -25,6 +36,10 @@ function CheckoutForm() {
   const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const [
+    checkoutMutation,
+    { loading: mutationLoading, data, error: mutationError },
+  ] = useMutation(CHECKOUT_MUTATION);
 
   async function handleSubmit(e) {
     // Stop form from submitting and turn loader on
@@ -44,6 +59,10 @@ function CheckoutForm() {
       setError(error);
     }
     // Send the token to our keystone server via custom mutation
+    const result = await checkoutMutation({
+      variables: { token: paymentMethod.id },
+    });
+    console.log(result);
     // Change the page to view the order
     // Close the cart
     // Turn the loader off
